@@ -1,53 +1,79 @@
 # Vesu Hooks
 
-A React hook library for gasless interactions with Vesu vTokens using ChipiPay's sponsored transaction system.
+A React hook library for gasless interactions with Vesu vTokens using ChipiPay's sponsored transaction system, with Supabase authentication integration.
 
 ## Overview
 
-This library provides a convenient React hook (`useVesuSponsored`) for performing gasless approve, deposit, and withdraw operations on Vesu vTokens. It leverages ChipiPay's `useCallAnyContract` to handle sponsored transactions, eliminating gas fees for users.
+This library provides a convenient React hook (`useVesuSponsored`) for performing gasless approve, deposit, and withdraw operations on Vesu vTokens. It leverages ChipiPay's `useCallAnyContract` to handle sponsored transactions, eliminating gas fees for users. It also includes Supabase authentication integration for secure user management.
 
 ## Features
 
 - 🚀 **Gasless Transactions**: All operations are sponsored via ChipiPay
 - 💰 **Multi-Asset Support**: WBTC, tBTC, USDC, and LBTC
 - 🏦 **Vesu Integration**: Direct interaction with Vesu vToken contracts
+- 🔐 **Supabase Auth**: Complete authentication system with email/password and OAuth
 - ⚡ **TypeScript Support**: Full type safety and IntelliSense
 - 🔒 **Secure**: Uses ChipiPay's encrypted wallet system
 
 ## Installation
 
 ```bash
-npm install @chipi-pay/chipi-sdk react
+npm install
 ```
+
+## Setup
+
+### 1. Environment Configuration
+
+Create a `.env.local` file with your Supabase credentials:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_key
+```
+
+You can get these from your Supabase project dashboard under **Settings > API**.
+
+### 2. Run Development Server
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`
 
 ## Quick Start
 
+### Using Supabase Authentication
+
 ```typescript
-import { useVesuSponsored, CONFIG } from './vesuSponsored';
+import { useSupabaseAuth } from './useSupabaseAuth';
 
 function MyComponent() {
-  const { approve, deposit, withdraw, isLoading, error } = useVesuSponsored();
+  const { user, loading, error, signIn, signOut } = useSupabaseAuth();
 
-  const handleDeposit = async () => {
-    const sponsorParams = {
-      encryptKey: userPin,
-      wallet: chipiWallet,
-      bearerToken: chipiBearerToken,
-      userAddress: userStarknetAddress,
-    };
+  const handleLogin = async () => {
+    await signIn('user@example.com', 'password123');
+  };
 
-    // 1. Approve USDC for the vToken
-    await approve(
-      sponsorParams,
-      CONFIG.tokens.USDC.address,
-      CONFIG.vTokens.USDC_BRAAVOS,
-      "100.0",
-      CONFIG.tokens.USDC.decimals
-    );
+  if (loading) return <div>Loading...</div>;
 
-    // 2. Deposit into Vesu vault
-    await deposit(
-      sponsorParams,
+  return (
+    <div>
+      {user ? (
+        <>
+          <p>Welcome, {user.email}</p>
+          <button onClick={signOut}>Logout</button>
+        </>
+      ) : (
+        <button onClick={handleLogin}>Login</button>
+      )}
+    </div>
+  );
+}
+```
+
+### Using Vesu Gasless Transactions
       CONFIG.vTokens.USDC_BRAAVOS,
       "25.0",
       CONFIG.tokens.USDC.decimals
