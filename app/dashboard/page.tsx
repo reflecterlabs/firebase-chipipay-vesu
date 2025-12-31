@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/lib/hooks/useFirebaseAuth';
 import { useFetchWallet } from '@/lib/hooks/useFetchWallet';
+import { useNetwork } from '@/lib/hooks/useNetwork.tsx';
 import WalletManager, { WalletSession } from '@/app/components/WalletManager';
 import FeatureContainer from '@/app/components/FeatureContainer';
 import VesuLending from '@/app/components/VesuLending';
+import NetworkSelector from '@/app/components/NetworkSelector';
 
 export default function DashboardPage() {
   const { user, loading, signOut } = useFirebaseAuth();
+  const { network } = useNetwork();
   const router = useRouter();
   const [walletSession, setWalletSession] = useState<WalletSession | null>(null);
 
@@ -92,7 +95,11 @@ export default function DashboardPage() {
           </div>
 
           {/* RIGHT SIDE: Wallet Module (Always Visible/Accessible) */}
-          <div className="lg:col-span-4 flex flex-col lg:h-[calc(100vh-140px)] lg:sticky lg:top-24">
+          <div className="lg:col-span-4 flex flex-col lg:h-[calc(100vh-140px)] lg:sticky lg:top-24 space-y-4">
+            
+            {/* Network Selector */}
+            <NetworkSelector />
+
             <div className="bg-white p-1 rounded-2xl shadow-sm border border-gray-200 flex-grow">
               <div className="h-full overflow-y-auto custom-scrollbar p-2">
                 <div className="mb-6 px-2">
@@ -110,8 +117,12 @@ export default function DashboardPage() {
                   <div className="space-y-2 px-2">
                     <div className="flex justify-between text-xs items-center">
                       <span className="text-gray-500">Network</span>
-                      <span className="font-mono text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded">
-                        {process.env.NEXT_PUBLIC_STARKNET_NETWORK || 'SEPOLIA'}
+                      <span className={`font-mono font-bold px-2 py-0.5 rounded ${
+                        network === 'MAINNET' 
+                          ? 'text-green-600 bg-green-50' 
+                          : 'text-orange-600 bg-orange-50'
+                      }`}>
+                        {network}
                       </span>
                     </div>
                     <div className="flex justify-between text-xs items-center">

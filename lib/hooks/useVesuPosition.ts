@@ -6,6 +6,7 @@ export type VesuPosition = {
     supplyBalance: string;
     debtBalance: string;
     apy: string;
+    walletBalance: string; // This will be fetched separately by VesuLending component
 };
 
 export function useVesuPosition(userAddress?: string) {
@@ -13,34 +14,35 @@ export function useVesuPosition(userAddress?: string) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const config = getVesuConfig();
+
     const fetchPositions = async () => {
         if (!userAddress) return;
         setLoading(true);
         setError(null);
         try {
-            // TODO: Integrate Starknet Provider here to read 'balanceOf' from vToken contracts.
-            // const config = getVesuConfig();
-            // const provider = new Provider(...);
-            // const balance = await provider.callContract(...);
+            const defaults: Record<string, string> = {
+                USDC: '5.4%',
+                ETH: '3.1%',
+                STRK: '2.5%',
+            };
 
-            // MOCK DATA FOR UI TESTING
-            // Simulating a network delay
-            await new Promise(r => setTimeout(r, 1000));
+            // Only show available tokens (filter out disabled ones)
+            const availableTokens = Object.entries(config.tokens)
+                .filter(([_, tokenConfig]) => tokenConfig.available !== false)
+                .map(([symbol]) => symbol);
 
-            setPositions([
-                {
-                    asset: 'USDC',
-                    supplyBalance: '0.00',
-                    debtBalance: '0.00',
-                    apy: '5.4%'
-                },
-                {
-                    asset: 'ETH',
-                    supplyBalance: '0.00',
-                    debtBalance: '0.00',
-                    apy: '3.1%'
-                }
-            ]);
+            // Note: walletBalance will be '...' as placeholder
+            // The VesuLending component will fetch individual balances using useTokenBalance
+            const entries = availableTokens.map(asset => ({
+                asset,
+                supplyBalance: '0.00', // TODO: Read from Vesu vToken contract
+                debtBalance: '0.00',   // TODO: Read from Vesu debt tracking
+                apy: defaults[asset] || '3.0%',
+                walletBalance: '...', // Placeholder - fetched by parent component
+            }));
+
+            setPositions(entries);
 
         } catch (err) {
             console.error(err);
@@ -52,7 +54,7 @@ export function useVesuPosition(userAddress?: string) {
 
     useEffect(() => {
         void fetchPositions();
-    }, [userAddress]);
+    }, [userAddress, config.network]);
 
     return { positions, loading, error, refetch: fetchPositions };
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useFirebaseAuth } from '@/lib/hooks/useFirebaseAuth';
 import { useCreateWallet } from '@chipi-stack/nextjs';
+import { deriveEncryptKey } from '@/lib/utils/deriveEncryptKey';
 
 /**
  * Componente para crear una billetera de ChipiPay
@@ -19,23 +20,12 @@ export default function CreateWallet({ onSuccess }: { onSuccess?: (data: WalletS
   const { user, getToken } = useFirebaseAuth();
   const { createWalletAsync, isLoading } = useCreateWallet();
 
-  const [encryptKey, setEncryptKey] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [walletData, setWalletData] = useState<any>(null);
   const [debugInfo, setDebugInfo] = useState<{ iss?: string; aud?: string; sub?: string } | null>(null);
 
   const handleCreateWallet = async () => {
-    if (!encryptKey) {
-      setError('Por favor ingresa una clave de encriptación');
-      return;
-    }
-
-    if (encryptKey.length < 8) {
-      setError('La clave debe tener al menos 8 caracteres');
-      return;
-    }
-
     try {
       setError('');
       setSuccess('');
@@ -72,6 +62,9 @@ export default function CreateWallet({ onSuccess }: { onSuccess?: (data: WalletS
         console.error('Error decoding token for debug:', e);
       }
 
+      // Derivar encryptKey automáticamente desde el UID para UX sin PIN
+      const encryptKey = await deriveEncryptKey(user.uid);
+
       // Crear billetera con ChipiPay
       const response = await createWalletAsync({
         params: {
@@ -81,20 +74,22 @@ export default function CreateWallet({ onSuccess }: { onSuccess?: (data: WalletS
         bearerToken,
       });
 
-      // Guardar información de la billetera
+      // Guardar información de la billetera - usar normalizedPublicKey para Starknet
+      const starknetAddress = response.wallet.normalizedPublicKey || response.wallet.publicKey;
       setWalletData({
-        publicKey: response.wallet.publicKey,
-        // walletId: response.wallet.id, // Removed to fix TS error
+        publicKey: starknetAddress,
+        rawPublicKey: response.wallet.publicKey,
         userId: user.uid,
         email: user.email,
       });
 
-      setSuccess(`¡Billetera creada exitosamente! Clave pública: ${response.wallet.publicKey}`);
+      // No almacenamos el PIN; se deriva en cada sesión desde el UID
+
+      setSuccess(`¡Billetera creada exitosamente! Dirección Starknet: ${starknetAddress}`);
       if (onSuccess) {
         onSuccess({
-          publicKey: response.wallet.publicKey,
-          // The type definition might not include 'id', but publicKey is a unique identifier for us
-          walletId: response.wallet.publicKey,
+          publicKey: starknetAddress,
+          walletId: response.wallet.publicKey, // Use raw publicKey as ID
           encryptKey
         });
       }
@@ -167,34 +162,9 @@ export default function CreateWallet({ onSuccess }: { onSuccess?: (data: WalletS
             void handleCreateWallet();
           }}
         >
-          <div>
-            <label htmlFor="encryptKey" className="block text-sm font-bold text-gray-700 mb-2">
-              Crea tu PIN de Acceso
-            </label>
-            <div className="relative">
-              <input
-                id="encryptKey"
-                name="encryptKey"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-                value={encryptKey}
-                onChange={(e) => setEncryptKey(e.target.value)}
-                disabled={isLoading}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400
-                         focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:outline-none
-                         disabled:bg-gray-50 disabled:text-gray-500 transition-all text-lg tracking-widest"
-              />
-            </div>
-            <p className="mt-2 text-xs text-gray-400 flex items-center">
-              <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-              Mínimo 8 caracteres. No la compartas.
-            </p>
-          </div>
-
           <button
             type="submit"
-            disabled={isLoading || !encryptKey}
+            disabled={isLoading}
             className="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-lg shadow-lg
                    hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                    disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.99] transition-all"

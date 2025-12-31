@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useFetchWallet } from '@/lib/hooks/useFetchWallet';
+import { useNetwork } from '@/lib/hooks/useNetwork';
+import { useFirebaseAuth } from '@/lib/hooks/useFirebaseAuth';
 import CreateWallet from '@/app/components/CreateWallet';
 import RestoreWallet from '@/app/components/RestoreWallet';
 
@@ -18,14 +20,28 @@ type WalletManagerProps = {
 
 export default function WalletManager({ onSessionChange, walletSession }: WalletManagerProps) {
     const { wallet: existingWallet, isLoading: walletLoading } = useFetchWallet();
+    const { user } = useFirebaseAuth();
+    const { isMainnet } = useNetwork();
+
+    const [copied, setCopied] = useState(false);
 
     const handleRestore = (encryptKey: string) => {
         if (!existingWallet) return;
         onSessionChange({
-            publicKey: existingWallet.publicKey,
+            publicKey: existingWallet.normalizedPublicKey || existingWallet.publicKey,
             walletId: existingWallet.id || existingWallet.publicKey,
             encryptKey
         });
+    };
+
+    const copyToClipboard = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
     };
 
     if (walletLoading) {
@@ -43,7 +59,7 @@ export default function WalletManager({ onSessionChange, walletSession }: Wallet
                 // 1. No Session: Show Auth Handlers (Restore or Create)
                 <div className="transform transition-all duration-500 ease-in-out">
                     {existingWallet ? (
-                        <RestoreWallet wallet={existingWallet} onUnlock={handleRestore} />
+                        <RestoreWallet wallet={existingWallet} userUid={user?.uid} onUnlock={handleRestore} />
                     ) : (
                         <CreateWallet onSuccess={onSessionChange} />
                     )}
@@ -58,9 +74,55 @@ export default function WalletManager({ onSessionChange, walletSession }: Wallet
                         <h3 className="text-gray-900 font-bold text-lg">Billetera Conectada</h3>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                        <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Clave Pública</p>
-                        <p className="text-sm font-mono text-gray-700 break-all">{walletSession.publicKey}</p>
+                    {/* Deposit Address Section */}
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                        <div className="flex items-center justify-between mb-2">
+                            <p className="text-xs text-blue-700 uppercase font-bold tracking-wider">Dirección de Depósito</p>
+                            <div className="flex items-center space-x-1">
+                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                <span className="text-[10px] text-blue-600 font-medium">Starknet</span>
+                            </div>
+                        </div>
+                        <div className="bg-white/80 backdrop-blur-sm p-3 rounded-md border border-blue-100 mb-3">
+                            <p className="text-xs font-mono text-gray-800 break-all leading-relaxed">{walletSession.publicKey}</p>
+                        </div>
+                        <button
+                            onClick={() => copyToClipboard(walletSession.publicKey)}
+                            className="w-full py-2 bg-blue-600 text-white text-sm font-bold rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+                        >
+                            {copied ? (
+                                <>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>¡Copiado!</span>
+                                </>
+                            ) : (
+                                <>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                    <span>Copiar Dirección</span>
+                                </>
+                            )}
+                        </button>
+                        {/* Explorer link to view activity */}
+                        <div className="mt-2 text-center">
+                            <a
+                                href={`${isMainnet ? 'https://starkscan.co' : 'https://sepolia.starkscan.co'}/contract/${walletSession.publicKey}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-[11px] font-semibold text-blue-700 hover:text-blue-800"
+                            >
+                                <svg className="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h4m0 0v4m0-4l-5 5m-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h7a2 2 0 012 2v7a2 2 0 01-2 2z" />
+                                </svg>
+                                Ver actividad en Starkscan
+                            </a>
+                        </div>
+                        <p className="text-[10px] text-blue-600 mt-2 text-center leading-relaxed">
+                            Usa esta dirección para recibir tokens en Starknet
+                        </p>
                     </div>
 
                     <button
