@@ -1,29 +1,59 @@
-# Vesu Hooks + ChipiPay (Firebase Edition)
+# OpenTheDoorz SDK
 
-Este proyecto integra **Vesu** (protocolo de préstamos) con **ChipiPay** (transacciones gasless) utilizando **Firebase Authentication**.
+**OpenTheDoorz SDK** is an open-source serverless SDK designed for developers who want to build modern Web3 applications with production-ready infrastructure.
 
-## Cambios Recientes (Migración Supabase -> Firebase)
-Se ha completado la migración total de la autenticación:
-- **Autenticación**: Firebase Auth (Email/Password).
-- **Base de Datos**: N/A (Usuario gestionado en Firebase).
-- **Tokens**: Firebase ID Tokens (JWT) verificados por ChipiPay.
+## What is OpenTheDoorz SDK?
 
-## 🆕 Selector de Red (Nuevo)
-Ahora puedes cambiar entre **Mainnet** y **Sepolia Testnet** directamente desde la interfaz:
-- El selector de red está en el panel derecho del dashboard
-- La configuración se guarda automáticamente en localStorage
-- Al cambiar de red, la aplicación se recarga para aplicar la configuración
-- **Sepolia**: Para desarrollo y pruebas (usa faucets para obtener tokens gratis)
-- **Mainnet**: Red de producción (requiere tokens reales con valor económico)
+A complete solution that lets you create Web3 applications without worrying about backend infrastructure. Includes:
 
-### Fondos por activo (Starknet)
-- **ETH (Sepolia)**: ✅ Tiene faucet → https://starknet-faucet.vercel.app/
-- **STRK (Sepolia)**: ✅ Disponible vía faucet → https://starknet-faucet.vercel.app/
-- **USDC (Sepolia)**: ⚠️ No hay faucet público estable; usar ETH de faucet o un minter/puente privado.
-- **Mainnet (ETH/USDC/STRK)**: No hay faucets. Requiere fondos reales / puente desde L1 o CEX con retiro a Starknet.
+- **🔐 Social Login**: Frictionless authentication using Firebase Auth (email/password, Google, etc.)
+- **💾 Serverless Storage**: Firebase (current) with roadmap for Supabase and other providers
+- **⛓️ On-Chain Integration**: Blockchain services like Vesu (lending protocol) on Starknet
+- **💸 Gasless Transactions**: ChipiPay SDK for user experience without gas fees
+- **👛 Wallet Management**: Wallet creation and management with user-derived encryption
 
-### Direcciones de contratos (override por `.env.local`)
-El SDK trae defaults para ETH/USDC en Starknet, pero puedes sobreescribirlos sin tocar código:
+## Key Features
+
+- **Serverless-first**: No servers to maintain, automatic scaling
+- **Framework-agnostic**: Use with Next.js, React, or your preferred framework
+- **Multi-chain ready**: Architecture prepared to support multiple blockchains
+- **Developer-friendly**: React hooks, TypeScript, complete documentation
+- **Open Source**: Contributions welcome, trunk-based workflow
+
+## Current Tech Stack
+
+| Component | Technology | Status |
+|-----------|------------|--------|
+| Auth | Firebase Auth | ✅ Active |
+| Storage | Firebase | ✅ Active |
+| Blockchain | Starknet | ✅ Active |
+| Gasless TX | ChipiPay | ✅ Active |
+| DeFi Protocol | Vesu Lending | ✅ Active |
+
+## Roadmap
+
+- [ ] Supabase as alternative storage option
+- [ ] Publish to npm as `@openthedoorz/sdk`
+- [ ] Multi-wallet support (multiple wallet management)
+- [ ] Support for other auth providers (Privy, Dynamic, etc.)
+- [ ] Integration with more DeFi protocols
+
+## 🆕 Network Selector
+You can now switch between **Mainnet** and **Sepolia Testnet** directly from the interface:
+- Network selector is in the dashboard's right panel
+- Configuration is automatically saved to localStorage
+- When changing networks, the application reloads to apply settings
+- **Sepolia**: For development and testing (use faucets to get free tokens)
+- **Mainnet**: Production network (requires real tokens with economic value)
+
+### Funds by Asset (Starknet)
+- **ETH (Sepolia)**: ✅ Has faucet → https://starknet-faucet.vercel.app/
+- **STRK (Sepolia)**: ✅ Available via faucet → https://starknet-faucet.vercel.app/
+- **USDC (Sepolia)**: ⚠️ No stable public faucet; use ETH from faucet or a private minter/bridge.
+- **Mainnet (ETH/USDC/STRK)**: No faucets. Requires real funds / bridge from L1 or CEX withdrawal to Starknet.
+
+### Contract Addresses (override via `.env.local`)
+The SDK comes with defaults for ETH/USDC on Starknet, but you can override them without touching code:
 
 ```bash
 # Sepolia
@@ -43,61 +73,187 @@ NEXT_PUBLIC_STARKNET_MAINNET_USDC_VTOKEN=<vToken_usdc_mainnet>
 NEXT_PUBLIC_STARKNET_MAINNET_STRK_VTOKEN=<vToken_strk_mainnet>
 ```
 
-Nota: STRK queda deshabilitado hasta que se definan sus direcciones; las acciones se bloquean si el address es placeholder.
+Note: STRK remains disabled until addresses are defined; actions are blocked if the address is a placeholder.
 
-## Configuración Requerida
+## Quick Start
 
-Para que el proyecto funcione correctamente y desaparezcan los errores 400/401, realiza lo siguiente:
-
-### 1. Variables de Entorno
-Crea un archivo `.env.local` con tus credenciales de Firebase:
+### 1. Installation
 ```bash
+npm install
+```
+
+### 2. Environment Variables
+Create a `.env.local` file with your credentials:
+```bash
+# Firebase Configuration
 NEXT_PUBLIC_FIREBASE_API_KEY=...
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-# ... resto de variables de Firebase
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+NEXT_PUBLIC_FIREBASE_APP_ID=...
+
+# ChipiPay Configuration
 NEXT_PUBLIC_CHIPI_API_KEY=...
-# Opcional: URL alpha/sandbox provista por Chipi Pay para pruebas (Sepolia)
-# Solicítala a soporte de Chipi Pay si necesitas testnet
-# NEXT_PUBLIC_CHIPI_ALPHA_URL=https://alpha.chipipay.com
 ```
 
-**Nota**: Ya NO necesitas configurar `NEXT_PUBLIC_STARKNET_NETWORK` en el `.env.local`. La red se selecciona desde la UI.
+See [`.env.example`](.env.example) for the complete list.
 
-### 2. Firebase Console
-1. Ve a [Firebase Console](https://console.firebase.google.com/).
-2. Selecciona tu proyecto.
-3. Ve a **Authentication** -> **Sign-in method**.
-4. Habilita el proveedor **Email/Password**.
+### 3. Firebase Setup
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project
+3. Go to **Authentication** → **Sign-in method**
+4. Enable the **Email/Password** provider
 
-### 3. ChipiPay Dashboard (CRITICO)
-Para que ChipiPay acepte los tokens de Firebase:
-1. Ve al [Dashboard de ChipiPay](https://dashboard.chipipay.com/).
-2. En la configuración de **JWT / Auth**:
+### 4. ChipiPay Setup
+For ChipiPay to accept Firebase tokens:
+1. Go to [ChipiPay Dashboard](https://dashboard.chipipay.com/)
+2. In **JWT / Auth** configuration:
    - **JWKS Endpoint**: `https://www.googleapis.com/identitytoolkit/v3/relyingparty/publicKeys`
-   - **Issuer (si se pide)**: `https://securetoken.google.com/<TU_PROJECT_ID>`
+   - **Issuer**: `https://securetoken.google.com/<YOUR_PROJECT_ID>`
 
-## Ejecución
+### 5. Run
 ```bash
-npm install
 npm run dev
 ```
 
-### UX sin PIN: Derivación automática de `encryptKey`
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-La aplicación oculta el PIN al usuario y deriva automáticamente la clave de encriptación de la billetera a partir del UID de Firebase.
+## Arquitectura
 
-- Variable opcional: `NEXT_PUBLIC_ENCRYPT_SALT` para personalizar el salt público usado en la derivación.
-- Si no se define, se usa `vesu_default_salt`.
+### Componentes Principales
 
-Esta estrategia busca simplicidad de UX. Para entornos con mayores requisitos de seguridad, considera habilitar un PIN/biometría. 
+```
+┌─────────────────────────────────────────────┐
+│         Frontend (Next.js + React)          │
+│  ┌─────────────────────────────────────┐   │
+│  │  UI Components (Wallet, Dashboard)   │   │
+│  └─────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────┐   │
+│  │   React Hooks (Auth, Balance, TX)    │   │
+│  └─────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│            SDK Layer (lib/)                  │
+│  • Firebase: Auth + Storage                  │
+│  • ChipiPay: Wallet + Gasless TX             │
+│  • Vesu: Lending Protocol Integration        │
+└─────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────┐
+│          Blockchain (Starknet)               │
+│  • Smart Contracts (ERC20, Vesu Pools)       │
+│  • Mainnet / Sepolia Testnet                 │
+└─────────────────────────────────────────────┘
+```
 
-### Red y Entorno (Mainnet vs Sepolia)
+### Available Hooks
 
-El selector de red de la UI controla contratos y enlaces (explorer). La red donde se crea la billetera ChipiPay depende de tu **API Public Key** y/o de `alphaUrl`:
+- `useFirebaseAuth()` - Authentication management
+- `useFetchWallet()` - Get user wallet
+- `useNetwork()` - Switch between Mainnet/Testnet
+- `useTokenBalance()` - Query real-time balances
+- `useVesuPosition()` - Lending positions
+- `useVesuTransaction()` - Execute lending transactions
 
-- API Keys de producción → Mainnet.
-- API Keys de sandbox/test → Sepolia.
-- También puedes apuntar a un backend de pruebas con `NEXT_PUBLIC_CHIPI_ALPHA_URL` (consultar con Chipi Pay).
+## Advanced Configuration
 
-Tras cambiar las credenciales/URL, reinicia el servidor para aplicar el cambio.
+### Network Switching
+The SDK supports dynamic network switching (Mainnet ↔ Sepolia):
+- **UI**: Visual selector in the dashboard
+- **Persistence**: Configuration saved to `localStorage`
+- **No rebuild**: Changes applied with page reload
+
+### Wallet Encryption
+The application uses **automatic key derivation** for frictionless UX:
+- Encryption key derived from Firebase UID
+- Optional: customize the salt with `NEXT_PUBLIC_ENCRYPT_SALT`
+- Default: `vesu_default_salt`
+
+For high-security environments, consider implementing additional PIN/biometrics.
+
+### Contract Addresses
+You can override contract addresses via `.env.local`:
+```bash
+# Sepolia Testnet
+NEXT_PUBLIC_STARKNET_SEPOLIA_ETH=0x049d36...
+NEXT_PUBLIC_STARKNET_SEPOLIA_USDC=0x053c91...
+NEXT_PUBLIC_STARKNET_SEPOLIA_STRK=0x04718f...
+
+# Mainnet
+NEXT_PUBLIC_STARKNET_MAINNET_ETH=0x049d36...
+NEXT_PUBLIC_STARKNET_MAINNET_USDC=0x053c91...
+```
+
+See complete address section above.
+
+### Testnet Faucets
+- **ETH/STRK (Sepolia)**: [starknet-faucet.vercel.app](https://starknet-faucet.vercel.app/)
+- **USDC (Sepolia)**: No public faucet; use ETH from faucet or private bridge
+
+## Contributing
+
+Contributions are welcome! This project follows a **trunk-based workflow** with feature flags.
+
+### Getting Started
+1. Read the [Contributing Guide](contrib/CONTRIBUTING.md)
+2. Review [Feature Flags](contrib/feature-flags.yaml) to see what's being developed
+3. Check [Contributor Activity](contrib/CONTRIBUTOR_ACTIVITY.yaml) to avoid conflicts
+
+### Workflow
+```bash
+# 1. Create branch from trunk
+git checkout trunk
+git pull
+git checkout -b feat/my-feature
+
+# 2. Develop behind feature flag
+# Add flag to lib/config/featureFlags.ts and contrib/feature-flags.yaml
+
+# 3. Commit and push
+git add .
+git commit -m "feat: change description"
+git push origin feat/my-feature
+
+# 4. Open PR against trunk
+```
+
+See [contrib/CONTRIBUTING.md](contrib/CONTRIBUTING.md) for complete details.
+
+## Project Structure
+
+```
+/
+├── app/                    # Next.js app router
+│   ├── components/        # UI components (Wallet, Dashboard, etc.)
+│   ├── dashboard/         # Dashboard page
+│   └── login/             # Login page
+├── lib/                   # SDK core
+│   ├── config/           # Feature flags, configuration
+│   ├── firebase/         # Firebase integration
+│   ├── hooks/            # Custom React hooks
+│   ├── services/         # External services (Gemini AI, etc.)
+│   ├── utils/            # Utilities (key derivation, etc.)
+│   └── vesu/             # Vesu protocol config
+├── contrib/              # Contribution documentation
+│   ├── CONTRIBUTING.md
+│   ├── feature-flags.yaml
+│   ├── scope-checklist.yaml
+│   └── CONTRIBUTOR_ACTIVITY.yaml
+└── scripts/              # Development scripts
+```
+
+## License
+
+[MIT](LICENSE) - OpenTheDoorz SDK
+
+## Support
+
+- 📖 [Documentation](contrib/CONTRIBUTING.md)
+- 🐛 [Issues](https://github.com/cxto21/supabase-chipipay-vesu-hooks/issues)
+- 💬 Discussions: Open an issue for questions
+
+---
+
+**Built with ❤️ by the OpenTheDoorz community**
