@@ -1,5 +1,13 @@
 # Feature flags registry (lightweight, env-based only)
-# Status values: planned | active | cleanup | deprecated
+# Used both for code control AND team visibility/coordination
+# 
+# Status values:
+#   - planned: Feature announced, branch created, development starting
+#   - active: Code merged to trunk, feature running (default=false if not validated)
+#   - cleanup: Feature stable, ready to remove flag and dead code
+#   - deprecated: Flag removed, feature is permanent
+#
+# Keep this file updated daily as you work to signal progress to teammates.
 
 flags:
   - id: 1
@@ -7,6 +15,7 @@ flags:
     default: true
     status: active
     description: Enable QR code display and copy-to-clipboard in Receive view
+    branch: feat/ui
     last_updated: 2026-01-02
 
   - id: 2
@@ -14,6 +23,7 @@ flags:
     default: true
     status: active
     description: Compact token selector with balances in Send view
+    branch: feat/ui
     last_updated: 2026-01-02
 
   - id: 3
@@ -21,6 +31,7 @@ flags:
     default: true
     status: active
     description: Button to open Starkscan activity for the connected address
+    branch: feat/ui
     last_updated: 2026-01-02
 
   - id: 4
@@ -28,6 +39,7 @@ flags:
     default: false
     status: planned
     description: Allow managing multiple wallets per user session
+    branch: feat/multi-wallet
     last_updated: 2026-01-02
 
   - id: 5
@@ -35,4 +47,38 @@ flags:
     default: false
     status: planned
     description: Enhanced lending interface (WIP)
+    branch: feat/lending-ui
+    last_updated: 2026-01-02
+
+  # Planned upstream features (for team visibility)
+  - id: 6
+    name: LANDING_PAGE_CDN
+    default: false
+    status: planned
+    description: Deploy landing page to Cloudflare CDN with serverless functions
+    branch: feat/landing-cloudflare
+    last_updated: 2026-01-02
+
+  - id: 7
+    name: NPM_PACKAGE_EXPORT
+    default: false
+    status: planned
+    description: Export SDK as @openthedoorz/sdk on npm for package consumers
+    branch: feat/npm-package
+    last_updated: 2026-01-02
+
+  - id: 8
+    name: GITHUB_ACTIONS_PUBLISH
+    default: false
+    status: planned
+    description: GitHub Actions workflow to publish SDK to npmjs on tag
+    branch: feat/cicd
+    last_updated: 2026-01-02
+
+  - id: 9
+    name: DOCKER_SETUP
+    default: false
+    status: planned
+    description: Docker environment with npm and all dependencies (dev/testing)
+    branch: feat/docker
     last_updated: 2026-01-02
