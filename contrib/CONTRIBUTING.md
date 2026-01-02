@@ -60,6 +60,73 @@ Feature flags serve **two purposes**:
 4) Turn flag `true` when validated and ready to activate.
 5) Cleanup: remove flag and dead code after a couple of stable releases.
 
+### Implementation example: Adding LENDING_V2 flag
+
+**Step 1: Add to `lib/config/featureFlags.ts`**
+```typescript
+export const FEATURE_FLAGS = {
+  LENDING_V2: false,  // default false (WIP)
+} as const;
+```
+
+**Step 2: Guard your code**
+```tsx
+import { FEATURE_FLAGS } from '@/lib/config/featureFlags';
+
+export function LendingDashboard() {
+  return (
+    <div>
+      {FEATURE_FLAGS.LENDING_V2 && (
+        <NewLendingUI />
+      )}
+      {!FEATURE_FLAGS.LENDING_V2 && (
+        <LegacyLendingUI />
+      )}
+    </div>
+  );
+}
+```
+
+**Step 3: Add to `contrib/feature-flags.yaml`**
+```yaml
+- id: 10
+  name: LENDING_V2
+  default: false
+  status: planned
+  description: Enhanced lending interface with position charts
+  branch: feat/lending-v2
+  last_updated: 2026-01-02
+```
+
+**Step 4: Activate when ready**
+Change `LENDING_V2: true` in `featureFlags.ts` → merge → deploy.
+
+**Step 5: Cleanup**
+After 2-3 stable releases, remove flag and `<LegacyLendingUI />` in a cleanup PR.
+
+### Build-time vs Runtime flags
+
+**Direct constant access (recommended):**
+```tsx
+import { FEATURE_FLAGS } from '@/lib/config/featureFlags';
+
+{FEATURE_FLAGS.WALLET_QR_CODE && <QRCode />}
+```
+- ✅ Bundler can tree-shake disabled features (smaller bundle)
+- ✅ Type-safe with autocomplete
+- ⚠️ Requires rebuild to change flags
+
+**Runtime function (if you need env control):**
+```tsx
+import { isEnabled } from '@/lib/config/featureFlags';
+
+{isEnabled('WALLET_QR_CODE') && <QRCode />}
+```
+- ✅ Can use env vars: `NEXT_PUBLIC_WALLET_QR_CODE=false`
+- ⚠️ All code goes to bundle (no tree-shaking)
+
+For most cases, use direct constant access (`FEATURE_FLAGS.X`). Use env vars only for runtime rollback without rebuild.
+
 ### Rollback
 If a flagged feature causes issues, flip the flag to `false` in `featureFlags.ts` (one-line change) and deploy; no need to revert the whole merge.
 
