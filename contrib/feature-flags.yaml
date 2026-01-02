@@ -1,0 +1,38 @@
+# Feature flags registry (lightweight, env-based only)
+# Status values: planned | active | cleanup | deprecated
+
+flags:
+  - id: 1
+    name: WALLET_QR_CODE
+    default: true
+    status: active
+    description: Enable QR code display and copy-to-clipboard in Receive view
+    last_updated: 2026-01-02
+
+  - id: 2
+    name: TOKEN_SELECTOR_DROPDOWN
+    default: true
+    status: active
+    description: Compact token selector with balances in Send view
+    last_updated: 2026-01-02
+
+  - id: 3
+    name: ADDRESS_ACTIVITY_LINK
+    default: true
+    status: active
+    description: Button to open Starkscan activity for the connected address
+    last_updated: 2026-01-02
+
+  - id: 4
+    name: MULTI_WALLET_SUPPORT
+    default: false
+    status: planned
+    description: Allow managing multiple wallets per user session
+    last_updated: 2026-01-02
+
+  - id: 5
+    name: ADVANCED_LENDING_UI
+    default: false
+    status: planned
+    description: Enhanced lending interface (WIP)
+    last_updated: 2026-01-02

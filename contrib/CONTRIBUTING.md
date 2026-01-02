@@ -17,17 +17,19 @@ This repo follows a lightweight trunk-based workflow with small, short-lived bra
 - Shared config (auth/network): call out changes explicitly in the PR if modified.
 
 ## Feature flags (no Remote Config in the SDK)
-1) Add flag with a safe default (`false`).
+1) Add flag with a safe default (`false`) to `contrib/feature-flags.yaml`.
 2) Develop behind the flag (do not break the existing path).
 3) Turn flag `true` when validated.
 4) Cleanup: remove flag and dead code after a couple of stable releases.
 
 Rollback: if a flagged feature causes issues, flip the flag to `false` (one-line change) and deploy; no need to revert the whole merge.
 
+**Registry:** See `contrib/feature-flags.yaml` for all active and planned flags. Update `last_updated` when modifying.
+
 ## Working in parallel / conflict avoidance
 - Announce when touching hotspot files (env, flags, config, design tokens).
 - Keep changes additive (especially env and flags) to reduce conflicts.
-- Before opening a PR, inspect scope: `git diff trunk --stat` and `git diff trunk --name-only`.
+- Before opening a PR, use the checklist in `contrib/scope-checklist.yaml` and inspect scope: `git diff trunk --stat` and `git diff trunk --name-only`.
 - Rebase onto latest `trunk` before requesting review.
 - If env conflicts arise, keep both additions, re-sort, and update the PR notes on new vars.
 
