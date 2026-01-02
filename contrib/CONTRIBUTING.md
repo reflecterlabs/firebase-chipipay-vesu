@@ -147,15 +147,15 @@ If a flagged feature causes issues, flip the flag to `false` in `featureFlags.ts
 
 ### PR template snippet
 ```
-## Resumen
+## Summary
 - ...
 
-## Cambios en config/env/flags
-- featureFlags: agrega FLAG_LENDING_V2 (default false), registrado en contrib/feature-flags.yaml
-- .env.example: agrega API_FOO_BASE_URL (dummy)
+## Changes in config/env/flags
+- featureFlags: adds FLAG_LENDING_V2 (default false), registered in contrib/feature-flags.yaml
+- .env.example: adds API_FOO_BASE_URL (dummy)
 
 ## Rollout / flags
-- FLAG_LENDING_V2=false (activar cuando esté listo; ver contrib/feature-flags.yaml)
+- FLAG_LENDING_V2=false (activate when ready; see contrib/feature-flags.yaml)
 
 ## Tests
 - npm test / lint / dev smoke

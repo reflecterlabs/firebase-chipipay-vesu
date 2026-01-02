@@ -39,15 +39,15 @@ deconflict_tips:
   - "Design tokens: add minimally; batch style changes in focused PRs."
 
 pr_template_snippet: |
-  ## Resumen
+  ## Summary
   - ...
 
-  ## Cambios en config/env/flags
-  - .env.example: agrega API_FOO_BASE_URL (dummy)
-  - featureFlags: agrega FLAG_LENDING_V2 (default false)
+  ## Changes in config/env/flags
+  - .env.example: adds API_FOO_BASE_URL (dummy)
+  - featureFlags: adds FLAG_LENDING_V2 (default false)
 
   ## Rollout / flags
-  - FLAG_LENDING_V2=false (activar cuando esté listo)
+  - FLAG_LENDING_V2=false (activate when ready)
 
   ## Tests
   - npm test / lint / dev smoke

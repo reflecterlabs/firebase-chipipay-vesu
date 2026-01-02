@@ -1,59 +1,59 @@
 # OpenTheDoorz SDK
 
-**OpenTheDoorz SDK** es un SDK serverless de código abierto diseñado para desarrolladores que quieren construir aplicaciones Web3 modernas con infraestructura lista para producción.
+**OpenTheDoorz SDK** is an open-source serverless SDK designed for developers who want to build modern Web3 applications with production-ready infrastructure.
 
-## ¿Qué es OpenTheDoorz SDK?
+## What is OpenTheDoorz SDK?
 
-Una solución completa que te permite crear aplicaciones Web3 sin preocuparte por la infraestructura backend. Incluye:
+A complete solution that lets you create Web3 applications without worrying about backend infrastructure. Includes:
 
-- **🔐 Social Login**: Autenticación sin fricción usando Firebase Auth (email/password, Google, etc.)
-- **💾 Almacenamiento Serverless**: Firebase (actual) con roadmap para Supabase y otros providers
-- **⛓️ Integración On-Chain**: Servicios blockchain como Vesu (lending protocol) en Starknet
-- **💸 Transacciones Gasless**: ChipiPay SDK para experiencia de usuario sin gas fees
-- **👛 Wallet Management**: Creación y gestión de wallets con encriptación derivada del usuario
+- **🔐 Social Login**: Frictionless authentication using Firebase Auth (email/password, Google, etc.)
+- **💾 Serverless Storage**: Firebase (current) with roadmap for Supabase and other providers
+- **⛓️ On-Chain Integration**: Blockchain services like Vesu (lending protocol) on Starknet
+- **💸 Gasless Transactions**: ChipiPay SDK for user experience without gas fees
+- **👛 Wallet Management**: Wallet creation and management with user-derived encryption
 
-## Características Principales
+## Key Features
 
-- **Serverless-first**: Sin servidores que mantener, escalado automático
-- **Framework-agnostic**: Usa con Next.js, React, o tu framework preferido
-- **Multi-chain ready**: Arquitectura preparada para soportar múltiples blockchains
-- **Developer-friendly**: Hooks de React, TypeScript, documentación completa
-- **Open Source**: Contribuciones bienvenidas, trunk-based workflow
+- **Serverless-first**: No servers to maintain, automatic scaling
+- **Framework-agnostic**: Use with Next.js, React, or your preferred framework
+- **Multi-chain ready**: Architecture prepared to support multiple blockchains
+- **Developer-friendly**: React hooks, TypeScript, complete documentation
+- **Open Source**: Contributions welcome, trunk-based workflow
 
-## Stack Tecnológico Actual
+## Current Tech Stack
 
-| Componente | Tecnología | Estado |
-|------------|------------|--------|
-| Auth | Firebase Auth | ✅ Activo |
-| Storage | Firebase | ✅ Activo |
-| Blockchain | Starknet | ✅ Activo |
-| Gasless TX | ChipiPay | ✅ Activo |
-| DeFi Protocol | Vesu Lending | ✅ Activo |
+| Component | Technology | Status |
+|-----------|------------|--------|
+| Auth | Firebase Auth | ✅ Active |
+| Storage | Firebase | ✅ Active |
+| Blockchain | Starknet | ✅ Active |
+| Gasless TX | ChipiPay | ✅ Active |
+| DeFi Protocol | Vesu Lending | ✅ Active |
 
 ## Roadmap
 
-- [ ] Supabase como opción de almacenamiento alternativo
-- [ ] Publicación en npm como `@openthedoorz/sdk`
-- [ ] Multi-wallet support (gestión de múltiples wallets)
-- [ ] Soporte para otros proveedores de auth (Privy, Dynamic, etc.)
-- [ ] Integración con más protocolos DeFi
+- [ ] Supabase as alternative storage option
+- [ ] Publish to npm as `@openthedoorz/sdk`
+- [ ] Multi-wallet support (multiple wallet management)
+- [ ] Support for other auth providers (Privy, Dynamic, etc.)
+- [ ] Integration with more DeFi protocols
 
-## 🆕 Selector de Red (Nuevo)
-Ahora puedes cambiar entre **Mainnet** y **Sepolia Testnet** directamente desde la interfaz:
-- El selector de red está en el panel derecho del dashboard
-- La configuración se guarda automáticamente en localStorage
-- Al cambiar de red, la aplicación se recarga para aplicar la configuración
-- **Sepolia**: Para desarrollo y pruebas (usa faucets para obtener tokens gratis)
-- **Mainnet**: Red de producción (requiere tokens reales con valor económico)
+## 🆕 Network Selector
+You can now switch between **Mainnet** and **Sepolia Testnet** directly from the interface:
+- Network selector is in the dashboard's right panel
+- Configuration is automatically saved to localStorage
+- When changing networks, the application reloads to apply settings
+- **Sepolia**: For development and testing (use faucets to get free tokens)
+- **Mainnet**: Production network (requires real tokens with economic value)
 
-### Fondos por activo (Starknet)
-- **ETH (Sepolia)**: ✅ Tiene faucet → https://starknet-faucet.vercel.app/
-- **STRK (Sepolia)**: ✅ Disponible vía faucet → https://starknet-faucet.vercel.app/
-- **USDC (Sepolia)**: ⚠️ No hay faucet público estable; usar ETH de faucet o un minter/puente privado.
-- **Mainnet (ETH/USDC/STRK)**: No hay faucets. Requiere fondos reales / puente desde L1 o CEX con retiro a Starknet.
+### Funds by Asset (Starknet)
+- **ETH (Sepolia)**: ✅ Has faucet → https://starknet-faucet.vercel.app/
+- **STRK (Sepolia)**: ✅ Available via faucet → https://starknet-faucet.vercel.app/
+- **USDC (Sepolia)**: ⚠️ No stable public faucet; use ETH from faucet or a private minter/bridge.
+- **Mainnet (ETH/USDC/STRK)**: No faucets. Requires real funds / bridge from L1 or CEX withdrawal to Starknet.
 
-### Direcciones de contratos (override por `.env.local`)
-El SDK trae defaults para ETH/USDC en Starknet, pero puedes sobreescribirlos sin tocar código:
+### Contract Addresses (override via `.env.local`)
+The SDK comes with defaults for ETH/USDC on Starknet, but you can override them without touching code:
 
 ```bash
 # Sepolia
@@ -73,17 +73,17 @@ NEXT_PUBLIC_STARKNET_MAINNET_USDC_VTOKEN=<vToken_usdc_mainnet>
 NEXT_PUBLIC_STARKNET_MAINNET_STRK_VTOKEN=<vToken_strk_mainnet>
 ```
 
-Nota: STRK queda deshabilitado hasta que se definan sus direcciones; las acciones se bloquean si el address es placeholder.
+Note: STRK remains disabled until addresses are defined; actions are blocked if the address is a placeholder.
 
 ## Quick Start
 
-### 1. Instalación
+### 1. Installation
 ```bash
 npm install
 ```
 
-### 2. Variables de Entorno
-Crea un archivo `.env.local` con tus credenciales:
+### 2. Environment Variables
+Create a `.env.local` file with your credentials:
 ```bash
 # Firebase Configuration
 NEXT_PUBLIC_FIREBASE_API_KEY=...
@@ -97,27 +97,27 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...
 NEXT_PUBLIC_CHIPI_API_KEY=...
 ```
 
-Ver [`.env.example`](.env.example) para la lista completa.
+See [`.env.example`](.env.example) for the complete list.
 
-### 3. Configuración de Firebase
-1. Ve a [Firebase Console](https://console.firebase.google.com/)
-2. Selecciona tu proyecto
-3. Ve a **Authentication** → **Sign-in method**
-4. Habilita el proveedor **Email/Password**
+### 3. Firebase Setup
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project
+3. Go to **Authentication** → **Sign-in method**
+4. Enable the **Email/Password** provider
 
-### 4. Configuración de ChipiPay
-Para que ChipiPay acepte los tokens de Firebase:
-1. Ve al [Dashboard de ChipiPay](https://dashboard.chipipay.com/)
-2. En la configuración de **JWT / Auth**:
+### 4. ChipiPay Setup
+For ChipiPay to accept Firebase tokens:
+1. Go to [ChipiPay Dashboard](https://dashboard.chipipay.com/)
+2. In **JWT / Auth** configuration:
    - **JWKS Endpoint**: `https://www.googleapis.com/identitytoolkit/v3/relyingparty/publicKeys`
-   - **Issuer**: `https://securetoken.google.com/<TU_PROJECT_ID>`
+   - **Issuer**: `https://securetoken.google.com/<YOUR_PROJECT_ID>`
 
-### 5. Ejecutar
+### 5. Run
 ```bash
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Arquitectura
 
@@ -148,33 +148,33 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 └─────────────────────────────────────────────┘
 ```
 
-### Hooks Disponibles
+### Available Hooks
 
-- `useFirebaseAuth()` - Gestión de autenticación
-- `useFetchWallet()` - Obtener wallet del usuario
-- `useNetwork()` - Cambiar entre Mainnet/Testnet
-- `useTokenBalance()` - Consultar balances en tiempo real
-- `useVesuPosition()` - Posiciones de lending
-- `useVesuTransaction()` - Ejecutar transacciones de lending
+- `useFirebaseAuth()` - Authentication management
+- `useFetchWallet()` - Get user wallet
+- `useNetwork()` - Switch between Mainnet/Testnet
+- `useTokenBalance()` - Query real-time balances
+- `useVesuPosition()` - Lending positions
+- `useVesuTransaction()` - Execute lending transactions
 
-## Configuración Avanzada
+## Advanced Configuration
 
 ### Network Switching
-El SDK soporta cambio dinámico de red (Mainnet ↔ Sepolia):
-- **UI**: Selector visual en el dashboard
-- **Persistencia**: Configuración guardada en `localStorage`
-- **Sin rebuild**: Cambios aplicados con recarga de página
+The SDK supports dynamic network switching (Mainnet ↔ Sepolia):
+- **UI**: Visual selector in the dashboard
+- **Persistence**: Configuration saved to `localStorage`
+- **No rebuild**: Changes applied with page reload
 
 ### Wallet Encryption
-La aplicación usa **derivación automática de claves** para UX sin fricción:
-- Clave de encriptación derivada del UID de Firebase
-- Opcional: personaliza el salt con `NEXT_PUBLIC_ENCRYPT_SALT`
+The application uses **automatic key derivation** for frictionless UX:
+- Encryption key derived from Firebase UID
+- Optional: customize the salt with `NEXT_PUBLIC_ENCRYPT_SALT`
 - Default: `vesu_default_salt`
 
-Para entornos de alta seguridad, considera implementar PIN/biometría adicional.
+For high-security environments, consider implementing additional PIN/biometrics.
 
 ### Contract Addresses
-Puedes sobreescribir direcciones de contratos vía `.env.local`:
+You can override contract addresses via `.env.local`:
 ```bash
 # Sepolia Testnet
 NEXT_PUBLIC_STARKNET_SEPOLIA_ETH=0x049d36...
@@ -186,42 +186,42 @@ NEXT_PUBLIC_STARKNET_MAINNET_ETH=0x049d36...
 NEXT_PUBLIC_STARKNET_MAINNET_USDC=0x053c91...
 ```
 
-Ver sección completa de direcciones arriba.
+See complete address section above.
 
 ### Testnet Faucets
 - **ETH/STRK (Sepolia)**: [starknet-faucet.vercel.app](https://starknet-faucet.vercel.app/)
-- **USDC (Sepolia)**: No hay faucet público; usar ETH de faucet o bridge privado
+- **USDC (Sepolia)**: No public faucet; use ETH from faucet or private bridge
 
-## Contribuir
+## Contributing
 
-¡Las contribuciones son bienvenidas! Este proyecto sigue un **trunk-based workflow** con feature flags.
+Contributions are welcome! This project follows a **trunk-based workflow** with feature flags.
 
-### Primeros Pasos
-1. Lee la [Guía de Contribución](contrib/CONTRIBUTING.md)
-2. Revisa las [Feature Flags](contrib/feature-flags.yaml) para ver qué se está desarrollando
-3. Verifica la [Actividad de Contribuidores](contrib/CONTRIBUTOR_ACTIVITY.yaml) para evitar conflictos
+### Getting Started
+1. Read the [Contributing Guide](contrib/CONTRIBUTING.md)
+2. Review [Feature Flags](contrib/feature-flags.yaml) to see what's being developed
+3. Check [Contributor Activity](contrib/CONTRIBUTOR_ACTIVITY.yaml) to avoid conflicts
 
-### Flujo de Trabajo
+### Workflow
 ```bash
-# 1. Crear rama desde trunk
+# 1. Create branch from trunk
 git checkout trunk
 git pull
-git checkout -b feat/mi-feature
+git checkout -b feat/my-feature
 
-# 2. Desarrollar detrás de feature flag
-# Agregar flag a lib/config/featureFlags.ts y contrib/feature-flags.yaml
+# 2. Develop behind feature flag
+# Add flag to lib/config/featureFlags.ts and contrib/feature-flags.yaml
 
-# 3. Commit y push
+# 3. Commit and push
 git add .
-git commit -m "feat: descripción del cambio"
-git push origin feat/mi-feature
+git commit -m "feat: change description"
+git push origin feat/my-feature
 
-# 4. Abrir PR contra trunk
+# 4. Open PR against trunk
 ```
 
-Ver [contrib/CONTRIBUTING.md](contrib/CONTRIBUTING.md) para detalles completos.
+See [contrib/CONTRIBUTING.md](contrib/CONTRIBUTING.md) for complete details.
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 /
@@ -230,30 +230,30 @@ Ver [contrib/CONTRIBUTING.md](contrib/CONTRIBUTING.md) para detalles completos.
 │   ├── dashboard/         # Dashboard page
 │   └── login/             # Login page
 ├── lib/                   # SDK core
-│   ├── config/           # Feature flags, configuración
-│   ├── firebase/         # Firebase integración
-│   ├── hooks/            # React hooks custom
-│   ├── services/         # Servicios externos (Gemini AI, etc.)
-│   ├── utils/            # Utilidades (derivación de claves, etc.)
+│   ├── config/           # Feature flags, configuration
+│   ├── firebase/         # Firebase integration
+│   ├── hooks/            # Custom React hooks
+│   ├── services/         # External services (Gemini AI, etc.)
+│   ├── utils/            # Utilities (key derivation, etc.)
 │   └── vesu/             # Vesu protocol config
-├── contrib/              # Documentación de contribución
+├── contrib/              # Contribution documentation
 │   ├── CONTRIBUTING.md
 │   ├── feature-flags.yaml
 │   ├── scope-checklist.yaml
 │   └── CONTRIBUTOR_ACTIVITY.yaml
-└── scripts/              # Scripts de desarrollo
+└── scripts/              # Development scripts
 ```
 
-## Licencia
+## License
 
 [MIT](LICENSE) - OpenTheDoorz SDK
 
-## Soporte
+## Support
 
-- 📖 [Documentación](contrib/CONTRIBUTING.md)
+- 📖 [Documentation](contrib/CONTRIBUTING.md)
 - 🐛 [Issues](https://github.com/cxto21/supabase-chipipay-vesu-hooks/issues)
-- 💬 Discusiones: Abre un issue para preguntas
+- 💬 Discussions: Open an issue for questions
 
 ---
 
-**Hecho con ❤️ por la comunidad OpenTheDoorz**
+**Built with ❤️ by the OpenTheDoorz community**
