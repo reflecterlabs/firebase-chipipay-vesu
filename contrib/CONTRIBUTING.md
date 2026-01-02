@@ -17,12 +17,14 @@ This repo follows a lightweight trunk-based workflow with small, short-lived bra
 - Shared config (auth/network): call out changes explicitly in the PR if modified.
 
 ## Feature flags (no Remote Config in the SDK)
-1) Add flag with a safe default (`false`) to `contrib/feature-flags.yaml`.
+1) Add flag with a safe default (`false`) to **both**:
+   - `lib/config/featureFlags.ts` (code that runs)
+   - `contrib/feature-flags.yaml` (team documentation)
 2) Develop behind the flag (do not break the existing path).
 3) Turn flag `true` when validated.
 4) Cleanup: remove flag and dead code after a couple of stable releases.
 
-Rollback: if a flagged feature causes issues, flip the flag to `false` (one-line change) and deploy; no need to revert the whole merge.
+Rollback: if a flagged feature causes issues, flip the flag to `false` in `featureFlags.ts` (one-line change) and deploy; no need to revert the whole merge.
 
 **Registry:** See `contrib/feature-flags.yaml` for all active and planned flags. Update `last_updated` when modifying.
 

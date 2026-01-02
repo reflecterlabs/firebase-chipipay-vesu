@@ -6,7 +6,8 @@ hotspots:
   - package.json
   - package-lock.json
   - tailwind.config.js
-  - lib/config/featureFlags.ts (or equivalent)
+  - lib/config/featureFlags.ts
+  - contrib/feature-flags.yaml
   - shared config (auth/network)
 
 branch_rules:
@@ -21,7 +22,8 @@ env_file_rules:
   - "List new env vars in the PR notes with a short purpose."
 
 feature_flags_rules:
-  - "Add flags with default=false unless the feature is core."
+  - "Add flags to BOTH lib/config/featureFlags.ts (code) and contrib/feature-flags.yaml (docs)."
+  - "Default=false unless the feature is core."
   - "Do not rename flags; remove them in a cleanup PR when stable."
   - "Develop behind the flag; activate after validation; then remove flag and dead code."
 
