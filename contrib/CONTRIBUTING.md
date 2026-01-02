@@ -1,6 +1,6 @@
 # Contributing (Trunk-Based Workflow)
 
-This repo follows a lightweight trunk-based workflow with small, short-lived branches and feature flags. The goal: trunk always deployable, low-friction merges, quick rollback via flags, and **transparent team coordination**.
+This repo follows a lightweight trunk-based workflow with small, short-lived branches and feature flags. The goal: trunk always deployable, low-friction merges, quick rollback via flags, and **transparent contributor coordination**.
 
 ## Workflow for developers
 
@@ -8,7 +8,7 @@ This repo follows a lightweight trunk-based workflow with small, short-lived bra
 - Create branch from `trunk`: `git checkout -b feat/feature-name`
 - If feature involves multiple files or will be developed over days, **announce it early**
 - Update `contrib/feature-flags.yaml` with the new flag (set `status: planned`)
-- Push to remote so teammates see what's in progress: `git push origin feat/feature-name`
+- Push to remote so contributors see what's in progress: `git push origin feat/feature-name`
 
 ### Step 2: Develop Behind Flags
 - Add flag to both `lib/config/featureFlags.ts` (code) and `contrib/feature-flags.yaml` (docs) with `default: false`
@@ -17,9 +17,9 @@ This repo follows a lightweight trunk-based workflow with small, short-lived bra
 - **Update `contrib/feature-flags.yaml` daily** with progress (change `last_updated`, add notes if needed)
 
 ### Step 3: Check for Overlaps
-- Before opening PR, review `contrib/feature-flags.yaml` to see what teammates are working on
+- Before opening PR, review `contrib/feature-flags.yaml` to see what contributors are working on
 - Use `git diff trunk --stat` to inspect scope and ensure no unexpected conflicts
-- If your changes overlap with another dev's branch, coordinate via the registry or async comments
+- If your changes overlap with another contributor's branch, coordinate via the registry or async comments.
 
 ### Step 4: Rebase and Merge
 - `git fetch origin && git rebase origin/trunk` to include latest changes
@@ -49,12 +49,12 @@ This repo follows a lightweight trunk-based workflow with small, short-lived bra
 
 Feature flags serve **two purposes**:
 1. **Code control**: Merge incomplete features to trunk without breaking prod (safe defaults)
-2. **Team visibility**: See who's working on what and their progress in `contrib/feature-flags.yaml`
+2. **Contributor visibility**: See who's working on what and their progress in `contrib/feature-flags.yaml`
 
 ### How to use
 1) Add flag to **both**:
    - `lib/config/featureFlags.ts` (code that runs)
-   - `contrib/feature-flags.yaml` (team documentation with status, date)
+   - `contrib/feature-flags.yaml` (contributor documentation with status, date)
 2) Develop behind the flag (do not break the existing path).
 3) Keep `contrib/feature-flags.yaml` updated as you work (update `last_updated` daily, note status changes)
 4) Turn flag `true` when validated and ready to activate.

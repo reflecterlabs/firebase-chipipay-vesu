@@ -1,5 +1,5 @@
 # Feature flags registry (lightweight, env-based only)
-# Used both for code control AND team visibility/coordination
+# Used both for code control AND contributor visibility/coordination
 # 
 # Status values:
 #   - planned: Feature announced, branch created, development starting
@@ -7,7 +7,7 @@
 #   - cleanup: Feature stable, ready to remove flag and dead code
 #   - deprecated: Flag removed, feature is permanent
 #
-# Keep this file updated daily as you work to signal progress to teammates.
+# Keep this file updated daily as you work to signal progress to contributors.
 
 flags:
   - id: 1
@@ -50,7 +50,7 @@ flags:
     branch: feat/lending-ui
     last_updated: 2026-01-02
 
-  # Planned upstream features (for team visibility)
+  # Planned upstream features (for contributor visibility)
   - id: 6
     name: LANDING_PAGE_CDN
     default: false
