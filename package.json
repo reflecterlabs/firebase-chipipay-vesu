@@ -33,9 +33,7 @@
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.0",
     "autoprefixer": "^10.4.23",
-    "postcss": "^8.5.6"
-  },
-  "devDependencies": {
+    "postcss": "^8.5.6",
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0"
