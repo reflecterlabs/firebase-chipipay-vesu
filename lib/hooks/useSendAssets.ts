@@ -193,11 +193,13 @@ export const useSendAssets = (token: 'ETH' | 'STRK' | 'USDC') => {
         });
         
         // Extract transaction hash - ChipiPay returns the hash as a string directly
-        let hash = null;
+        let hash: string | null = null;
         if (typeof result === 'string') {
           hash = result;
         } else if (result && typeof result === 'object') {
-          hash = result.transaction_hash || result.transactionHash || result.hash || result.txHash;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const resultObj = result as any;
+          hash = resultObj.transaction_hash || resultObj.transactionHash || resultObj.hash || resultObj.txHash;
         }
         
         if (hash) {
