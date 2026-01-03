@@ -5,6 +5,11 @@ import { ChipiClientProvider } from '@chipi-stack/nextjs';
 import { NetworkProvider } from '@/lib/hooks/useNetwork.tsx';
 import { useEffect, useState } from 'react';
 
+// CRITICAL: Read env vars at module level for static export
+// Next.js inlines NEXT_PUBLIC_* during build
+const CHIPI_API_KEY = process.env.NEXT_PUBLIC_CHIPI_API_KEY || '';
+const CHIPI_ALPHA_URL = process.env.NEXT_PUBLIC_CHIPI_ALPHA_URL;
+
 export default function RootLayout({
   children,
 }: {
@@ -29,14 +34,12 @@ export default function RootLayout({
     );
   }
 
-  const apiKey = process.env.NEXT_PUBLIC_CHIPI_API_KEY || '';
-
   return (
     <html lang="es">
       <body>
         <ChipiClientProvider
-          apiPublicKey={apiKey}
-          alphaUrl={process.env.NEXT_PUBLIC_CHIPI_ALPHA_URL}
+          apiPublicKey={CHIPI_API_KEY}
+          alphaUrl={CHIPI_ALPHA_URL}
         >
           <NetworkProvider>
             {children}
