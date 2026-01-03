@@ -3,7 +3,7 @@
 
 name = "openthedoorz-sdk"
 compatibility_date = "2024-01-01"
-pages_build_output_dir = ".vercel/output/static"
+pages_build_output_dir = ".next"
 
 # Environment variables for production
 [env.production]
