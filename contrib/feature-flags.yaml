@@ -63,9 +63,9 @@ flags:
     name: LANDING_PAGE_CDN
     default: false
     status: planned
-    description: Deploy landing page to Cloudflare CDN with serverless functions
-    branch: feat/landing-cloudflare
-    last_updated: 2026-01-02
+    description: Configure Next.js deployment to Cloudflare Pages with wrangler.toml and build optimization
+    branch: feat/cdn-cloudflare
+    last_updated: 2026-01-03
 
   - id: 8
     name: NPM_PACKAGE_EXPORT

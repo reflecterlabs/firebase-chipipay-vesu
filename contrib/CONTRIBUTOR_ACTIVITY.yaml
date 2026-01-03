@@ -9,11 +9,11 @@ current_active_work:
     estimated_completion: "2026-02-15"
     feature_flags: ["MULTI_WALLET_SUPPORT"]
 
-  - contributor: "@send-assets-team"
-    branch: "feat/send-assets"
-    files: ["app/components/WalletPopup.tsx", "lib/hooks/useSendAssets.ts"]
+  - contributor: "@cloudflare-deployment-team"
+    branch: "feat/cdn-cloudflare"
+    files: ["wrangler.toml", "next.config.js", "package.json", ".env.cloudflare.example"]
     estimated_completion: "2026-01-04"
-    feature_flags: ["SEND_ASSETS"]
+    feature_flags: ["LANDING_PAGE_CDN"]
 
 completed_recently:
   - contributor: "@contributor-wallet-ui"
@@ -33,6 +33,12 @@ completed_recently:
     pr_number: "#8"
     merged_date: "2026-01-03"
     changes: "Added Vesu Explorer with 4 action components (Earn/Borrow/Multiply), useTokenPrices hook, NetworkSelector improvements"
+
+  - contributor: "@send-assets-team"
+    branch: "feat/send-assets"
+    pr_number: "#9"
+    merged_date: "2026-01-03"
+    changes: "Complete send assets with ChipiPay integration, address validation, fee calculation, minimum amounts per token"
 
 how_to_use:
   - "Check this board before starting major feature work"

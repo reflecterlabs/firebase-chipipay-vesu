@@ -16,10 +16,12 @@ export const FEATURE_FLAGS = {
   WALLET_QR_CODE: true,
   TOKEN_SELECTOR_DROPDOWN: true,
   ADDRESS_ACTIVITY_LINK: true,
+  SEND_ASSETS: true,
   
   // Planned/WIP features (keep false until ready)
   MULTI_WALLET_SUPPORT: false,
   ADVANCED_LENDING_UI: false,
+  LANDING_PAGE_CDN: false,
   
   // Development aids
   DEBUG_MODE: process.env.NODE_ENV === 'development',
