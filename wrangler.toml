@@ -3,30 +3,29 @@
 
 name = "openthedoorz-sdk"
 compatibility_date = "2024-01-01"
+
+# Deploy only the static and server files, not the build cache
+# Cloudflare Pages will serve .next/static and handle routing
 pages_build_output_dir = ".next"
 
-# Environment variables for production
+# Build configuration
+[build]
+command = "npm run build"
+watch_paths = ["app/**", "lib/**", "public/**", "next.config.js", "tailwind.config.js", "postcss.config.js"]
+root_dir = "."
+
+# Exclude large cache files from upload
 [env.production]
 vars = { NODE_ENV = "production" }
 
-# Environment variables for preview
 [env.preview]
 vars = { NODE_ENV = "preview" }
 
-# Build configuration
-# Note: Cloudflare Pages will automatically detect Next.js and use the appropriate build command
-# If using @cloudflare/next-on-pages, the build command will be: npx @cloudflare/next-on-pages
-
-# Custom build settings (optional)
-# [build]
-# command = "npm run build"
-# 
-# [build.environment]
-# NODE_VERSION = "18"
+# Note: Cloudflare will automatically exclude node_modules and build caches
+# These directories should be in .gitignore:
+# - .next/cache/
+# - .next/cache-webpack/
+# - node_modules/
 
 # Static assets caching
 # Cloudflare Pages automatically handles caching for static assets
-
-# Custom domain configuration (update after deployment)
-# [site]
-# bucket = ".vercel/output/static"
