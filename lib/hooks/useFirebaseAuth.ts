@@ -27,6 +27,11 @@ export const useFirebaseAuth = (): UseFirebaseAuthReturn => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!auth) {
+            setLoading(false);
+            return;
+        }
+        
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
             setLoading(false);
@@ -36,6 +41,8 @@ export const useFirebaseAuth = (): UseFirebaseAuthReturn => {
     }, []);
 
     const signUp = useCallback(async (email: string, password: string) => {
+        if (!auth) throw new Error('Firebase not initialized');
+        
         try {
             setError(null);
             setLoading(true);
@@ -50,6 +57,8 @@ export const useFirebaseAuth = (): UseFirebaseAuthReturn => {
     }, []);
 
     const signIn = useCallback(async (email: string, password: string) => {
+        if (!auth) throw new Error('Firebase not initialized');
+        
         try {
             setError(null);
             setLoading(true);
@@ -64,6 +73,8 @@ export const useFirebaseAuth = (): UseFirebaseAuthReturn => {
     }, []);
 
     const signOut = useCallback(async () => {
+        if (!auth) throw new Error('Firebase not initialized');
+        
         try {
             setError(null);
             setLoading(true);
@@ -78,7 +89,7 @@ export const useFirebaseAuth = (): UseFirebaseAuthReturn => {
     }, []);
 
     const getToken = useCallback(async () => {
-        if (!auth.currentUser) return null;
+        if (!auth || !auth.currentUser) return null;
         return await getIdToken(auth.currentUser);
     }, []);
 
