@@ -2,13 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   
-  // Cloudflare Pages compatibility
-  // For static export, uncomment the following:
-  // output: 'export',
-  // images: { unoptimized: true },
-  
-  // For SSR with Cloudflare Workers, use @cloudflare/next-on-pages adapter
-  // and use: npx @cloudflare/next-on-pages
+  // Cloudflare Pages compatibility - STATIC EXPORT
+  output: 'export',
+  images: { unoptimized: true },
   
   // Performance optimizations
   poweredByHeader: false,
