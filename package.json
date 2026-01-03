@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Vesu Hooks with ChipiPay Integration",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +15,10 @@
     "dev:reset": "bash scripts/reset-dev.sh",
     "dev:reset:full": "bash scripts/reset-dev.sh --full",
     "dev:check": "node scripts/check-env.js",
-    "dev:logs": "bash scripts/logs.sh"
+    "dev:logs": "bash scripts/logs.sh",
+    "pages:build": "next build",
+    "pages:deploy": "wrangler pages deploy .next --project-name=openthedoorz-sdk",
+    "pages:dev": "wrangler pages dev .next --port 3000"
   },
   "dependencies": {
     "@chipi-stack/nextjs": "latest",

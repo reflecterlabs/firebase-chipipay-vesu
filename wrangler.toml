@@ -1,0 +1,32 @@
+# Cloudflare Pages configuration for OpenTheDoorz SDK
+# This project uses Next.js 15 with App Router deployed to Cloudflare Pages
+
+name = "openthedoorz-sdk"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = ".vercel/output/static"
+
+# Environment variables for production
+[env.production]
+vars = { NODE_ENV = "production" }
+
+# Environment variables for preview
+[env.preview]
+vars = { NODE_ENV = "preview" }
+
+# Build configuration
+# Note: Cloudflare Pages will automatically detect Next.js and use the appropriate build command
+# If using @cloudflare/next-on-pages, the build command will be: npx @cloudflare/next-on-pages
+
+# Custom build settings (optional)
+# [build]
+# command = "npm run build"
+# 
+# [build.environment]
+# NODE_VERSION = "18"
+
+# Static assets caching
+# Cloudflare Pages automatically handles caching for static assets
+
+# Custom domain configuration (update after deployment)
+# [site]
+# bucket = ".vercel/output/static"
