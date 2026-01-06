@@ -33,6 +33,14 @@ const Header: React.FC<HeaderProps> = ({ onOpenWallet }) => {
         </div>
         
         <div className="flex items-center gap-4">
+          <Link
+            href="https://openthedoorz.gitbook.io/open-the-doorz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+          >
+            Docs
+          </Link>
           <button 
             onClick={onOpenWallet}
             className="px-6 py-2 bg-white text-black text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all"

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Link from 'next/link';
 import { Shield, Zap, Cpu, Database, TrendingUp, Layers, ArrowUp, ArrowDown } from 'lucide-react';
 
 const Landing: React.FC = () => {
@@ -48,6 +49,25 @@ const Landing: React.FC = () => {
               Unlock the full potential of Web3 with a single line of code. 
               OpenTheDoorz provides social login, encrypted cloud storage, and high-speed execution—completely serverless.
             </p>
+
+            <div className="flex flex-wrap gap-4 pt-6">
+              <Link
+                href="https://openthedoorz.gitbook.io/open-the-doorz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all flex items-center gap-2"
+              >
+                View Documentation
+              </Link>
+              <Link
+                href="https://github.com/reflecterlabs/openthedoorz-sdk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all flex items-center gap-2"
+              >
+                GitHub Repo
+              </Link>
+            </div>
           </div>
 
           {/* Wallet Preview in Hero - Now visible on mobile too */}
