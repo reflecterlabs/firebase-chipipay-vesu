@@ -39,11 +39,11 @@ A complete solution that lets you create Web3 applications without worrying abou
 - [ ] Integration with more DeFi protocols
 
 ## 🆕 Network Selector
-You can now switch between **Mainnet** and **Sepolia Testnet** directly from the interface:
+Current build is **Mainnet-only** (Sepolia disabled) for production readiness:
 - Network selector is in the dashboard's right panel
 - Configuration is automatically saved to localStorage
 - When changing networks, the application reloads to apply settings
-- **Sepolia**: For development and testing (use faucets to get free tokens)
+- **Sepolia**: (Disabled in this build)
 - **Mainnet**: Production network (requires real tokens with economic value)
 
 ### Funds by Asset (Starknet)
