@@ -1,4 +1,4 @@
-Application error: a client-side exception has occurred while loading 499c0ab5.openthedoorz-sdk.pages.dev (see the browser console for more information).#!/usr/bin/env node
+#!/usr/bin/env node
 
 /**
  * Script to verify and inject environment variables before build
