@@ -5,10 +5,11 @@ import { ChipiClientProvider } from '@chipi-stack/nextjs';
 import { NetworkProvider } from '@/lib/hooks/useNetwork.tsx';
 import { useEffect, useState } from 'react';
 
-// CRITICAL: Read env vars at module level for static export
-// Next.js inlines NEXT_PUBLIC_* during build
-const CHIPI_API_KEY = process.env.NEXT_PUBLIC_CHIPI_API_KEY || '';
-const CHIPI_ALPHA_URL = process.env.NEXT_PUBLIC_CHIPI_ALPHA_URL;
+// CRITICAL: Use hardcoded config for Cloudflare Pages compatibility
+import { chipiConfig } from '@/lib/config/env';
+
+const CHIPI_API_KEY = chipiConfig.apiPublicKey;
+const CHIPI_ALPHA_URL = chipiConfig.alphaUrl;
 
 export default function RootLayout({
   children,
