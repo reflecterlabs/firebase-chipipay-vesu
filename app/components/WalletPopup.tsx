@@ -216,7 +216,7 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
         onClick={onClose}
       />
-      
+
       {/* Backdrop */}
       {isOpen && (
         <div
@@ -798,9 +798,8 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                           setSendAddressError('');
                         }}
                         placeholder="0x..."
-                        className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${
-                          sendAddressError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
-                        }`}
+                        className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${sendAddressError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
+                          }`}
                       />
                       {sendAddressError && (
                         <div className="flex items-center gap-1 mt-2 text-xs text-red-500">
@@ -826,9 +825,8 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                             setSendAmountError('');
                           }}
                           placeholder="0.00"
-                          className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${
-                            sendAmountError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
-                          }`}
+                          className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${sendAmountError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
+                            }`}
                         />
                         <button
                           onClick={() => {
@@ -907,11 +905,10 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                     <button
                       onClick={handleConfirmSend}
                       disabled={sendAssetsHook.isLoading || !sendAmount || !sendToAddress}
-                      className={`w-full py-4 font-bold uppercase tracking-widest text-xs transition-all ${
-                        sendAssetsHook.isLoading || !sendAmount || !sendToAddress
-                          ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
-                          : 'bg-white text-black hover:bg-zinc-200'
-                      }`}
+                      className={`w-full py-4 font-bold uppercase tracking-widest text-xs transition-all ${sendAssetsHook.isLoading || !sendAmount || !sendToAddress
+                        ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
+                        : 'bg-white text-black hover:bg-zinc-200'
+                        }`}
                     >
                       {sendAssetsHook.isLoading ? 'Sending...' : 'Confirm Send'}
                     </button>
@@ -977,7 +974,7 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
               )}
 
               {walletView === 'lending' && (
-                <VesuExplorer onBack={() => setWalletView('assets')} />
+                <VesuExplorer onBack={() => setWalletView('assets')} walletSession={walletSession} onSessionChange={setWalletSession} />
               )}
 
               {walletView === 'storage' && (
