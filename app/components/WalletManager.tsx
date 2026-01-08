@@ -62,6 +62,18 @@ export default function WalletManager({ onSessionChange, walletSession }: Wallet
                 <div className="transform transition-all duration-500 ease-in-out">
                     {existingWallet ? (
                         <RestoreWallet wallet={existingWallet} userUid={user?.uid} onUnlock={handleRestore} />
+                    ) : user ? (
+                        /* Authenticated but wallet not fetched yet - Show loading/init state instead of Create button */
+                        <div className="flex flex-col items-center justify-center py-6 text-center space-y-4">
+                            <div className="w-10 h-10 border-2 border-white/20 border-t-white animate-spin rounded-full"></div>
+                            <div className="space-y-1">
+                                <p className="text-xs font-bold text-white uppercase tracking-widest">Inicializando Billetera</p>
+                                <p className="text-[10px] text-zinc-500 uppercase tracking-widest leading-relaxed">
+                                    Estamos configurando tu billetera inteligente <br />
+                                    no-custodial automáticamente.
+                                </p>
+                            </div>
+                        </div>
                     ) : (
                         <CreateWallet onSuccess={onSessionChange} />
                     )}
@@ -81,7 +93,7 @@ export default function WalletManager({ onSessionChange, walletSession }: Wallet
                             <p className="text-[10px] text-zinc-300 font-bold uppercase tracking-widest">Dirección Principal</p>
                             <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">Starknet</span>
                         </div>
-                        
+
                         <div className="bg-black/50 border border-white/5 p-3 rounded mb-3 font-mono">
                             <p className="text-[10px] text-zinc-400 break-all leading-relaxed tracking-tighter">
                                 {walletSession.publicKey.slice(0, 10)}...{walletSession.publicKey.slice(-10)}

@@ -18,7 +18,9 @@ import {
   CheckCircle2,
   Info,
   Eye,
-  EyeOff
+  EyeOff,
+  Zap,
+  ArrowRight
 } from 'lucide-react';
 import { useFirebaseAuth } from '@/lib/hooks/useFirebaseAuth';
 import { useFetchWallet } from '@/lib/hooks/useFetchWallet';
@@ -32,9 +34,10 @@ import { useTokenPrices } from '@/lib/hooks/useTokenPrices';
 import { useTokenBalance } from '@/lib/hooks/useTokenBalance';
 import { useSendAssets } from '@/lib/hooks/useSendAssets';
 import { formatStarknetAddress } from '@/lib/utils/formatAddress';
+import { BridgeUSDC } from '@/app/components/BridgeUSDC';
 
 type AuthView = 'login' | 'register';
-type WalletView = 'assets' | 'lending' | 'storage' | 'staging' | 'trading' | 'send' | 'receive' | 'settings';
+type WalletView = 'assets' | 'lending' | 'storage' | 'staging' | 'trading' | 'send' | 'receive' | 'settings' | 'bridge';
 
 // Token Icon Component with fallback
 const TokenIcon: React.FC<{ src: string; alt: string; fallback: string; size?: string }> = ({ src, alt, fallback, size = 'w-6 h-6' }) => {
@@ -216,7 +219,7 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
         onClick={onClose}
       />
-      
+
       {/* Backdrop */}
       {isOpen && (
         <div
@@ -248,6 +251,13 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                 <Settings size={18} />
               </button>
             )}
+            <button
+              onClick={onClose}
+              className="p-2 text-zinc-500 hover:text-white transition-colors ml-1"
+              title="Close"
+            >
+              <X size={18} />
+            </button>
           </div>
         </div>
 
@@ -424,7 +434,7 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                     </button>
                   </div>
 
-                  {/* Storage, Lending, Staging Buttons */}
+                  {/* Action Buttons Grid */}
                   <div className="grid grid-cols-3 gap-2 p-4 border-b border-white/10">
                     <button
                       onClick={() => setWalletView('storage')}
@@ -435,25 +445,25 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                     </button>
 
                     <button
+                      onClick={() => setWalletView('bridge')}
+                      className="flex flex-col items-center gap-2 p-3 border border-emerald-500/20 bg-gradient-to-b from-emerald-500/10 to-transparent hover:from-emerald-500/20 active:from-emerald-500/30 transition-all group lg:min-h-[80px] justify-center"
+                    >
+                      <Zap size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-500">Buy / Fund</span>
+                    </button>
+
+                    <button
                       onClick={() => setWalletView('lending')}
                       className="flex flex-col items-center gap-2 p-3 border border-white/10 hover:bg-white/5 transition-all"
                     >
                       <TrendingUp size={18} className="text-white" />
                       <span className="text-[10px] uppercase font-bold tracking-widest text-white">Lending</span>
                     </button>
-
-                    <button
-                      onClick={() => setWalletView('staging')}
-                      className="flex flex-col items-center gap-2 p-3 border border-white/10 hover:bg-white/5 transition-all"
-                    >
-                      <Layers size={18} className="text-white" />
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-white">Staging</span>
-                    </button>
                   </div>
 
                   {/* Dashboard Explorer Tabs */}
                   <div className="flex-1">
-                    <div className="px-4 pt-4 grid grid-cols-3 border-b border-white/5">
+                    <div className="px-4 pt-4 grid grid-cols-2 border-b border-white/5">
                       <button
                         onClick={() => setActiveDashboardTab('assets')}
                         className={`text-[9px] uppercase tracking-widest font-bold pb-3 whitespace-nowrap relative transition-colors flex justify-center ${activeDashboardTab === 'assets' ? 'text-white' : 'text-zinc-500 hover:text-white'}`}
@@ -468,93 +478,87 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                         Positions
                         {activeDashboardTab === 'positions' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
                       </button>
-                      <button
-                        onClick={() => setActiveDashboardTab('trading')}
-                        className={`text-[9px] uppercase tracking-widest font-bold pb-3 whitespace-nowrap relative transition-colors flex justify-center ${activeDashboardTab === 'trading' ? 'text-white' : 'text-zinc-500 hover:text-white'}`}
-                      >
-                        Bot Trading
-                        {activeDashboardTab === 'trading' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
-                      </button>
                     </div>
 
                     <div className="p-4">
                       {activeDashboardTab === 'assets' && (
-                        <div className="space-y-2">
-                          {/* Asset rows remain same... */}
-                          <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                <TokenIcon
-                                  src="https://cryptologos.cc/logos/ethereum-eth-logo.png"
-                                  alt="ETH"
-                                  fallback="Ξ"
-                                />
+                        <div className="space-y-4">
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                  <TokenIcon
+                                    src="https://cryptologos.cc/logos/ethereum-eth-logo.png"
+                                    alt="ETH"
+                                    fallback="Ξ"
+                                  />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-bold text-white">Ethereum</div>
+                                  <div className="text-xs text-zinc-400">
+                                    {ethBalance} ETH
+                                  </div>
+                                </div>
                               </div>
-                              <div>
-                                <div className="text-sm font-bold text-white">Ethereum</div>
-                                <div className="text-xs text-zinc-400">
-                                  {ethBalance} ETH
+                              <div className="text-right">
+                                <div className="text-sm font-bold text-white">
+                                  ${ethValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </div>
+                                <div className="text-[10px] text-zinc-500">
+                                  ${prices.ETH.toLocaleString()} / unit
                                 </div>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <div className="text-sm font-bold text-white">
-                                ${ethValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                              </div>
-                              <div className="text-[10px] text-zinc-500">
-                                ${prices.ETH.toLocaleString()} / unit
-                              </div>
-                            </div>
-                          </div>
 
-                          <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                <TokenIcon
-                                  src="https://cryptologos.cc/logos/starknet-token-strk-logo.png"
-                                  alt="STRK"
-                                  fallback="S"
-                                />
+                            <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                  <TokenIcon
+                                    src="https://cryptologos.cc/logos/starknet-token-strk-logo.png"
+                                    alt="STRK"
+                                    fallback="S"
+                                  />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-bold text-white">Starknet</div>
+                                  <div className="text-xs text-zinc-400">
+                                    {strkBalance} STRK
+                                  </div>
+                                </div>
                               </div>
-                              <div>
-                                <div className="text-sm font-bold text-white">Starknet</div>
-                                <div className="text-xs text-zinc-400">
-                                  {strkBalance} STRK
+                              <div className="text-right">
+                                <div className="text-sm font-bold text-white">
+                                  ${strkValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </div>
+                                <div className="text-[10px] text-zinc-500">
+                                  ${prices.STRK.toLocaleString()} / unit
                                 </div>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <div className="text-sm font-bold text-white">
-                                ${strkValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                              </div>
-                              <div className="text-[10px] text-zinc-500">
-                                ${prices.STRK.toLocaleString()} / unit
-                              </div>
-                            </div>
-                          </div>
 
-                          <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                <TokenIcon
-                                  src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png"
-                                  alt="USDC"
-                                  fallback="$"
-                                />
-                              </div>
-                              <div>
-                                <div className="text-sm font-bold text-white">USD Coin</div>
-                                <div className="text-xs text-zinc-400">
-                                  {usdcBalance} USDC
+                            <div className="flex items-center justify-between p-3 bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                  <TokenIcon
+                                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png"
+                                    alt="USDC"
+                                    fallback="$"
+                                  />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-bold text-white">USD Coin</div>
+                                  <div className="text-xs text-zinc-400">
+                                    {usdcBalance} USDC
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-sm font-bold text-white">
-                                ${usdcValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                              </div>
-                              <div className="text-[10px] text-zinc-500">
-                                Stablecoin
+                              <div className="text-right">
+                                <div className="text-sm font-bold text-white">
+                                  ${usdcValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </div>
+                                <div className="text-[10px] text-zinc-500">
+                                  Stablecoin
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -572,18 +576,6 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                           <p className="text-[10px] text-zinc-500 max-w-[200px]">
                             Real-time tracking of your lending, borrow and multiply positions is coming soon.
                           </p>
-                        </div>
-                      )}
-
-                      {activeDashboardTab === 'trading' && (
-                        <div className="flex flex-col items-center justify-center py-12 text-center">
-                          <Sparkles size={32} className="text-zinc-600 mb-4" />
-                          <h4 className="text-sm font-bold text-white uppercase tracking-tight mb-2">Bot Trading</h4>
-                          <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md mb-4 text-blue-400">
-                            <Info size={12} />
-                            <span className="text-[9px] font-bold uppercase tracking-widest">Under Development</span>
-                          </div>
-                          <p className="text-[10px] text-zinc-500 max-w-[180px]">Automated AI strategies are coming soon.</p>
                         </div>
                       )}
                     </div>
@@ -798,9 +790,8 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                           setSendAddressError('');
                         }}
                         placeholder="0x..."
-                        className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${
-                          sendAddressError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
-                        }`}
+                        className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${sendAddressError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
+                          }`}
                       />
                       {sendAddressError && (
                         <div className="flex items-center gap-1 mt-2 text-xs text-red-500">
@@ -826,9 +817,8 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                             setSendAmountError('');
                           }}
                           placeholder="0.00"
-                          className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${
-                            sendAmountError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
-                          }`}
+                          className={`w-full bg-white/5 border p-4 text-sm focus:outline-none transition-colors placeholder:text-zinc-500 text-white ${sendAmountError ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-white'
+                            }`}
                         />
                         <button
                           onClick={() => {
@@ -907,11 +897,10 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                     <button
                       onClick={handleConfirmSend}
                       disabled={sendAssetsHook.isLoading || !sendAmount || !sendToAddress}
-                      className={`w-full py-4 font-bold uppercase tracking-widest text-xs transition-all ${
-                        sendAssetsHook.isLoading || !sendAmount || !sendToAddress
-                          ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
-                          : 'bg-white text-black hover:bg-zinc-200'
-                      }`}
+                      className={`w-full py-4 font-bold uppercase tracking-widest text-xs transition-all ${sendAssetsHook.isLoading || !sendAmount || !sendToAddress
+                        ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
+                        : 'bg-white text-black hover:bg-zinc-200'
+                        }`}
                     >
                       {sendAssetsHook.isLoading ? 'Sending...' : 'Confirm Send'}
                     </button>
@@ -959,10 +948,22 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                       onClick={() => {
                         navigator.clipboard.writeText(formatStarknetAddress(wallet?.publicKey || '0x04718285712f0959891c8d9045966755c4ab4301002380ee73d59952a'));
                       }}
-                      className="w-full py-3 mb-3 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
+                      className="w-full py-3 mb-4 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
                     >
                       <Copy size={14} /> Copy Address
                     </button>
+
+                    <div className="w-full p-4 bg-amber-400/5 border border-amber-400/20 rounded-xl mb-3 group hover:border-amber-400/40 transition-all cursor-pointer" onClick={() => setWalletView('bridge')}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-1.5 bg-amber-400 rounded-md">
+                          <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" className="w-3 h-3" alt="Binance" />
+                        </div>
+                        <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Fondeá desde Binance</span>
+                      </div>
+                      <p className="text-[9px] text-zinc-500 uppercase leading-relaxed tracking-wider">
+                        ¿Querés depositar USDC desde un Exchange? Usá nuestro Bridge inteligente.
+                      </p>
+                    </div>
 
                     {network !== 'MAINNET' && (
                       <button
@@ -977,7 +978,11 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
               )}
 
               {walletView === 'lending' && (
-                <VesuExplorer onBack={() => setWalletView('assets')} />
+                <VesuExplorer onBack={() => setWalletView('assets')} walletSession={walletSession} onSessionChange={setWalletSession} />
+              )}
+
+              {walletView === 'bridge' && (
+                <BridgeUSDC onBack={() => setWalletView('assets')} walletAddress={wallet?.publicKey || ''} />
               )}
 
               {walletView === 'storage' && (
