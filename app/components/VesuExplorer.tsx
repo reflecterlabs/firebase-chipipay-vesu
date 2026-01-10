@@ -108,38 +108,18 @@ export const VesuExplorer: React.FC<VesuExplorerProps> = ({ onBack, walletSessio
                     <ChevronLeft size={14} /> Back to Assets
                 </button>
 
-                <div className="flex items-center gap-4 border-b border-white/10 mb-6 pb-2">
-                    <button
-                        onClick={() => setActiveTab('stake')}
-                        className={`text-xs font-bold uppercase tracking-widest pb-2 transition-all relative ${activeTab === 'stake' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-                    >
-                        Stake
-                        {activeTab === 'stake' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('withdraw')}
-                        className={`text-xs font-bold uppercase tracking-widest pb-2 transition-all relative ${activeTab === 'withdraw' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-                    >
-                        Withdraw
-                        {activeTab === 'withdraw' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
-                    </button>
-                </div>
+
             </div>
 
             {/* Content Section */}
-            <div className="flex-1 flex flex-col items-center justify-center p-4">
+            <div className="flex-1 flex flex-col items-center justify-start pt-10 p-4">
                 <div className="w-full max-w-sm space-y-8 text-center">
-                    <div className="space-y-3">
-                        <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-blue-500/10 text-white">
-                            {activeTab === 'stake' ? <ArrowUpCircle size={32} /> : <ArrowDownCircle size={32} />}
-                        </div>
-                        <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
-                            {activeTab === 'stake' ? 'Lending Deposit' : 'Lending Withdrawal'}
+                    <div className="space-y-4">
+                        <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+                            Deposit & Earn
                         </h2>
-                        <p className="text-sm text-zinc-500 leading-relaxed font-light">
-                            {activeTab === 'stake'
-                                ? 'Deposit your USDC into Vesu pools to start earning institutional-grade yield.'
-                                : 'Withdraw your staked USDC assets from Vesu protocol back to your wallet.'}
+                        <p className="text-sm text-zinc-400 leading-relaxed font-light">
+                            Deposit your USDC into Vesu pools to start earning institutional-grade yield.
                         </p>
                     </div>
 
