@@ -11,11 +11,14 @@ A complete solution that lets you create Web3 applications without worrying abou
 - **⛓️ On-Chain Integration**: Blockchain services like Vesu (lending protocol) on Starknet
 - **💸 Gasless Transactions**: ChipiPay SDK for user experience without gas fees
 - **👛 Wallet Management**: Wallet creation and management with user-derived encryption
+- **🌉 Native Bridging**: Direct funding from Binance, OKX, and L1/L2 chains via Layerswap Widget
 
 ## Key Features
 
 - **Serverless-first**: No servers to maintain, automatic scaling
-- **Framework-agnostic**: Use with Next.js, React, or your preferred framework
+- **Seamless Bridging**: Fully integrated Layerswap Widget for one-click funding
+- **Automated Onboarding**: Smart wallet initialization is handled during account creation
+- **Premium UI**: Ultra-dark professional interface with native dashboard components
 - **Multi-chain ready**: Architecture prepared to support multiple blockchains
 - **Developer-friendly**: React hooks, TypeScript, complete documentation
 - **Open Source**: Contributions welcome, trunk-based workflow
@@ -28,6 +31,7 @@ A complete solution that lets you create Web3 applications without worrying abou
 | Storage | Firebase | ✅ Active |
 | Blockchain | Starknet | ✅ Active |
 | Gasless TX | ChipiPay | ✅ Active |
+| Bridge | Layerswap Native Widget | ✅ Active |
 | DeFi Protocol | Vesu Lending | ✅ Active |
 
 ## Roadmap

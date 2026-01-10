@@ -436,6 +436,7 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
 
                   {/* Action Buttons Grid */}
                   <div className="grid grid-cols-3 gap-2 p-4 border-b border-white/10">
+                    {/* Storage & Buy/Fund Hidden
                     <button
                       onClick={() => setWalletView('storage')}
                       className="flex flex-col items-center gap-2 p-3 border border-white/10 hover:bg-white/5 transition-all"
@@ -451,32 +452,34 @@ const WalletPopup: React.FC<WalletPopupProps> = ({ isOpen, onClose }) => {
                       <Zap size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
                       <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-500">Buy / Fund</span>
                     </button>
+                    */}
 
                     <button
                       onClick={() => setWalletView('lending')}
-                      className="flex flex-col items-center gap-2 p-3 border border-white/10 hover:bg-white/5 transition-all"
+                      className="col-span-3 flex flex-row items-center justify-between px-6 py-4 border border-blue-500/30 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 transition-all group shadow-[0_0_20px_rgba(59,130,246,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]"
                     >
-                      <TrendingUp size={18} className="text-white" />
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-white">Lending</span>
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 bg-blue-500/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                          <TrendingUp size={24} className="text-blue-400" />
+                        </div>
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-black uppercase tracking-widest text-white group-hover:text-blue-200 transition-colors">Lending & Loans</span>
+                          <span className="text-[10px] text-zinc-400 font-medium tracking-wider">Earn Institutional Yield</span>
+                        </div>
+                      </div>
+                      <ArrowRight size={20} className="text-zinc-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
                     </button>
                   </div>
 
                   {/* Dashboard Explorer Tabs */}
                   <div className="flex-1">
-                    <div className="px-4 pt-4 grid grid-cols-2 border-b border-white/5">
+                    <div className="px-4 pt-4 grid grid-cols-1 border-b border-white/5">
                       <button
                         onClick={() => setActiveDashboardTab('assets')}
-                        className={`text-[9px] uppercase tracking-widest font-bold pb-3 whitespace-nowrap relative transition-colors flex justify-center ${activeDashboardTab === 'assets' ? 'text-white' : 'text-zinc-500 hover:text-white'}`}
+                        className={`text-[9px] uppercase tracking-widest font-bold pb-3 whitespace-nowrap relative transition-colors flex justify-center text-white`}
                       >
                         Assets
-                        {activeDashboardTab === 'assets' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
-                      </button>
-                      <button
-                        onClick={() => setActiveDashboardTab('positions')}
-                        className={`text-[9px] uppercase tracking-widest font-bold pb-3 whitespace-nowrap relative transition-colors flex justify-center ${activeDashboardTab === 'positions' ? 'text-white' : 'text-zinc-500 hover:text-white'}`}
-                      >
-                        Positions
-                        {activeDashboardTab === 'positions' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                       </button>
                     </div>
 
